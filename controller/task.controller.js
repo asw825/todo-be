@@ -22,4 +22,21 @@ taskController.getTask = async (req, res) => {
   }
 };
 
+taskController.updateTask = async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+    if (!task) {
+      throw new Error("App can not find the task");
+    }
+    if (findId) {
+      const taskList = await Task.updateOne({ task, isComplete }).select(
+        "-__v"
+      );
+      res.status(200).json({ status: "ok", data: taskList });
+    }
+  } catch (error) {
+    res.status(400).json({ status: "fail", error });
+  }
+};
+
 module.exports = taskController;
