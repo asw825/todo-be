@@ -28,15 +28,21 @@ taskController.updateTask = async (req, res) => {
     if (!task) {
       throw new Error("App can not find the task");
     }
-    if (findId) {
-      const taskList = await Task.updateOne({ task, isComplete }).select(
-        "-__v"
-      );
-      res.status(200).json({ status: "ok", data: taskList });
-    }
+    const fields = Object.keys(req.body);
+    fields.map((item) => (task[item] = req.body[item]));
+    await task.save();
+    res.status(200).json({ status: "success", data: task });
   } catch (error) {
     res.status(400).json({ status: "fail", error });
   }
 };
 
+taskController.deleteTask = async (req, res) => {
+  try {
+    const deleteItem = await Task.findByIdAndDelete(req.params.id);
+    res.status(200).json({ status: "success", data: deleteItem });
+  } catch (error) {
+    res.status(400).json({ status: "fail", error });
+  }
+};
 module.exports = taskController;
