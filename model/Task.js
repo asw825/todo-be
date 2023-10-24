@@ -10,6 +10,7 @@ const taskSchema = Schema(
       type: Boolean,
       required: true,
     },
+    author: { type: Schema.Types.ObjectId, required: true, ref: "User" },
   },
   {
     timestamps: true,
@@ -17,5 +18,4 @@ const taskSchema = Schema(
 );
 
 const Task = mongoose.model("Task", taskSchema);
-
 module.exports = Task;
